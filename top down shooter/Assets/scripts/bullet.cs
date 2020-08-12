@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
+    float time = 0;
     public float damage = 25f;
 	// Start is called before the first frame update
 	void OnTriggerEnter(Collider coll)
@@ -15,7 +16,12 @@ public class bullet : MonoBehaviour
                 coll.GetComponent<enemy>().TakeDamage(damage);
                
             }
+            Debug.Log("Time of bullet:" + time);
             Destroy(gameObject);
         }
+    }
+    void Update()
+    {
+        time += Time.deltaTime;
     }
 }

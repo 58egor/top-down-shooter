@@ -6,6 +6,8 @@ public class enemy : MonoBehaviour
 {
     Rigidbody body;
     public float HP=100;
+    public float move = 10;
+    public float time = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,15 @@ public class enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 pos = transform.position;
+        pos.x += move;
+        transform.position = pos;
+        time += Time.deltaTime;
+        if (time > 1)
+        {
+           move=move *-1;
+           time = -1;
+        }
 
     }
     public void TakeDamage(float damage)
