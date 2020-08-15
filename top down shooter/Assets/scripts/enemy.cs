@@ -32,7 +32,7 @@ public class enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        if (HP < 0)
+        if (HP <= 0)
         {
             Die();
         }

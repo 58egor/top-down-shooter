@@ -7,6 +7,7 @@ public class RayShoot : MonoBehaviour
 	public float speed = 20;
     public float damage = 25;
     public float timeout = 0.2f;
+	public int targets = 3;
     private float curTimeout;
     public Transform gunPoint;
 	public Transform bullet;
@@ -31,6 +32,7 @@ public class RayShoot : MonoBehaviour
 				info.GetComponent<RayBullet>().damage = damage;
 				info.GetComponent<RayBullet>().speed = speed;
 				info.GetComponent<RayBullet>().bullet = bul;
+				info.GetComponent<RayBullet>().targets = targets;
 				info.GetComponent<RayBullet>().ready = true;
 				Debug.Log("Префаб создан");
 						       curTimeout = 0;
