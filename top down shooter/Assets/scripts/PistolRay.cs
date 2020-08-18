@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayShoot : MonoBehaviour
+public class PistolRay : MonoBehaviour
 {
 	public float speed = 20;
     public float damage = 25;

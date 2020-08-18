@@ -27,7 +27,9 @@ public class RayBullet : MonoBehaviour
         RaycastHit[] hit;
         hit = Physics.RaycastAll(transform.position, transform.forward);
         RaycastHit copy;
-        for(int i = 0; i < hit.Length - 1; i++)//сортируем полученные цели по дистанции по возрастанияю
+        if (hit.Length != 0)
+        {
+            for (int i = 0; i < hit.Length - 1; i++)//сортируем полученные цели по дистанции по возрастанияю
         {
             for(int i2 = i+1; i2 < hit.Length; i2++)
             {
@@ -40,8 +42,7 @@ public class RayBullet : MonoBehaviour
 
             }
         }
-            if (hit.Length!=0)
-        {
+
             if (names.Count==0)//если у нас еще не было попаданий
             {
                 Debug.Log("Target:" + hit[j].collider.name);
@@ -66,7 +67,7 @@ public class RayBullet : MonoBehaviour
                 distance = hit[j].distance;
             }
             time += Time.deltaTime;//увеличиваем время
-            if (distance < time * speed && time*speed<distance+0.2)
+            if (distance < time * speed && time * speed < distance + (speed/20))
             {
                 Debug.Log("попал");
                 if (hit[j].collider.gameObject.layer == 8)//8-слой врага
@@ -82,7 +83,7 @@ public class RayBullet : MonoBehaviour
                     damage = damage - 10;//если попали в препятствие то снижаем урон пули
                     names.Add(hit[j].collider);//добавляем в коллекцию попавших целей
                 }
-                if (hit[j].collider.gameObject.layer == 0 || targets == 0)//удаялем пулю и луч если попали в слой стены или количество целей закончилось
+                if (hit[j].collider.gameObject.layer == 0 || targets == 0 || damage<=0)//удаялем пулю и луч если попали в слой стены или количество целей закончилось
                 {
                     Debug.Log("Удаляюсь");
                     Destroy(bulletInstance.gameObject);
@@ -91,7 +92,7 @@ public class RayBullet : MonoBehaviour
             }
             else
             {
-                if (time * speed > distance + 0.2)
+                if (time * speed > distance + speed/20)
                 {
                     names.Add(hit[j].collider);
                 }

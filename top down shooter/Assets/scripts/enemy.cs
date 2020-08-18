@@ -32,6 +32,7 @@ public class enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
+        Debug.Log("Имя:"+gameObject.name+";Получил урон:"+damage+";количество здоровья:"+HP);
         if (HP <= 0)
         {
             Die();
