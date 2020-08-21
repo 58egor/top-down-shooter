@@ -12,13 +12,16 @@ public class SMGRay : MonoBehaviour
 	public Transform gunPoint;
 	public Transform bullet;
 	public Rigidbody bul;
-	public int chetminus = 5;
-	public int chetplus = 5;
-	int razbros = 0;
+	public int number=5;//после какой пули увеличивается разброс
+	public float degree = 1;//на сколько градусов изменяется разброс
+	public int max = 10;//максимальое значение
+	int chetminus = 5;
+	int chetplus = 5;
+	float razbros = 0;
 	// Start is called before the first frame update
 	void Start()
 	{
-
+		chetminus = chetplus = number;
 	}
 
 	// Update is called once per frame
@@ -44,7 +47,7 @@ public class SMGRay : MonoBehaviour
 				Debug.Log("Префаб создан");
 				curTimeout = 0;
 				chetplus--;
-				chetminus = 5;
+				chetminus = number;
 			}
 
 		}
@@ -52,22 +55,22 @@ public class SMGRay : MonoBehaviour
 		{
 			curTimeout = timeout + 1;
 			chetminus--;
-			chetplus = 5;
+			chetplus = number;
 		}
 		if (chetplus == 0)
         {
-			chetplus = 5;
-			if (razbros != 10)
+			chetplus = number;
+			if (razbros < max)
 			{
-				razbros += 1;
+				razbros += degree;
 			}
         }
         if (chetminus == 0)
         {
-			chetminus = 5;
-            if (razbros != 0)
+			chetminus = number;
+            if (razbros > 0)
             {
-				razbros -= 1;
+				razbros -= degree;
             }
         }
 	}
