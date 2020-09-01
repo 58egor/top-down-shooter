@@ -18,37 +18,51 @@ public class SMGRay : MonoBehaviour
 	int chetminus = 5;
 	int chetplus = 5;
 	float razbros = 0;
+	int holder;
+	public int oboima = 30;
+	public float ReloadTime = 2f;
+	float rt = 0;
+	bool ReloadActive = false;
 	// Start is called before the first frame update
 	void Start()
 	{
 		chetminus = chetplus = number;
+		rt = ReloadTime;
+		holder = oboima;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 
-		if (Input.GetMouseButton(1))
+		if (Input.GetMouseButton(0) && ReloadActive==false)
 		{
-			curTimeout += Time.deltaTime;
-			if (curTimeout > timeout)
+			if (holder != 0)
 			{
-				Transform info;
-				Vector3 rot= transform.rotation.eulerAngles;
-				float rand= Random.Range(-razbros, razbros);
-				rot.y += rand;
-				Debug.Log("Изначальный поворот"+ transform.rotation.y+ " Случайное число" +rand+" Поворот точки:" + rot);
-				info = Instantiate(bullet, gunPoint.position, Quaternion.Euler(rot.x,rot.y,rot.z));
-				info.GetComponent<RayBullet>().damage = damage;
-				info.GetComponent<RayBullet>().speed = speed;
-				info.GetComponent<RayBullet>().bullet = bul;
-				info.GetComponent<RayBullet>().targets = targets;
-				info.GetComponent<RayBullet>().ready = true;
-				Debug.Log("Префаб создан");
-				curTimeout = 0;
-				chetplus--;
-				chetminus = number;
+				curTimeout += Time.deltaTime;
+				if (curTimeout > timeout)
+				{
+					holder--;
+					Transform info;
+					Vector3 rot = transform.parent.gameObject.transform.rotation.eulerAngles;
+					float rand = Random.Range(-razbros, razbros);
+					rot.y += rand;
+					info = Instantiate(bullet, gunPoint.position, Quaternion.Euler(rot.x, rot.y, rot.z));
+					info.GetComponent<RayBullet>().damage = damage;
+					info.GetComponent<RayBullet>().speed = speed;
+					info.GetComponent<RayBullet>().bullet = bul;
+					info.GetComponent<RayBullet>().targets = targets;
+					info.GetComponent<RayBullet>().ready = true;
+					Debug.Log("Префаб создан");
+					curTimeout = 0;
+					chetplus--;
+					chetminus = number;
+				}
 			}
+			else
+            {
+				ReloadActive = true;
+            }
 
 		}
 		else
@@ -73,5 +87,39 @@ public class SMGRay : MonoBehaviour
 				razbros -= degree;
             }
         }
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			if (holder != oboima)
+			{
+				holder = 0;
+				ReloadActive = true;
+
+			}
+		}
+		if (ReloadActive)
+		{
+			Reload();
+		}
+	}
+	void Reload()
+	{
+		if (rt > 0)
+		{
+			rt -= Time.deltaTime;
+			Debug.Log("Перезарядка:" + rt);
+		}
+		else
+		{
+			razbros = 0;
+			ReloadActive = false;
+			rt = ReloadTime;
+			holder = oboima;
+			Debug.Log("Перезарядка закончилась");
+		}
+	}
+	void OnDisable()
+	{
+		rt = ReloadTime;
 	}
 }
+

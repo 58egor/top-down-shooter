@@ -23,13 +23,13 @@ public class ShootGunRay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetMouseButton(1))
+		if (Input.GetMouseButton(0))
 		{
 			curTimeout += Time.deltaTime;
 			if (curTimeout > timeout)
 			{
 				Transform info;
-				info = Instantiate(bullet, gunPoint.position, transform.rotation);
+				info = Instantiate(bullet, gunPoint.position, transform.parent.gameObject.transform.rotation);
 				info.GetComponent<RayBullet>().damage = damage;
 				info.GetComponent<RayBullet>().speed = speed;
 				info.GetComponent<RayBullet>().bullet = bul;
@@ -37,7 +37,7 @@ public class ShootGunRay : MonoBehaviour
 				info.GetComponent<RayBullet>().ready = true;
 				for (int i = 0; i < (bullets / 2); i++)
 				{
-					Vector3 rot = transform.rotation.eulerAngles;
+					Vector3 rot = transform.parent.gameObject.transform.rotation.eulerAngles;
 					rot.y -= razbros*(i+1);
 					info = Instantiate(bullet, gunPoint.position,Quaternion.Euler(rot.x, rot.y, rot.z));
 					info.GetComponent<RayBullet>().damage = damage;
@@ -49,7 +49,7 @@ public class ShootGunRay : MonoBehaviour
 				}
 				for (int i = 0; i < (bullets / 2); i++)
 				{
-					Vector3 rot = transform.rotation.eulerAngles;
+					Vector3 rot = transform.parent.gameObject.transform.rotation.eulerAngles;
 					rot.y += razbros * (i + 1);
 					info = Instantiate(bullet, gunPoint.position, Quaternion.Euler(rot.x, rot.y, rot.z));
 					info.GetComponent<RayBullet>().damage = damage;

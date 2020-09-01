@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 371784629}
   - component: {fileID: 371784630}
   - component: {fileID: 371784631}
+  - component: {fileID: 371784632}
   m_Layer: 9
   m_Name: character
   m_TagString: Untagged
@@ -253,6 +254,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMove: 6
   sensitivity: 5
+  DashTime: 0.2
+  DashSpeed: 20
 --- !u!54 &371784623
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -400,8 +403,9 @@ MonoBehaviour:
   gunPoint: {fileID: 1369822860}
   bullet: {fileID: 962701545887299494, guid: 77a54a1930fba35418fc7541d6b47c24, type: 3}
   bul: {fileID: 8307207279187055083, guid: 69c23c740a0aaa841a5a59ab0394ebb3, type: 3}
-  chetminus: 5
-  chetplus: 5
+  number: 5
+  degree: 1
+  max: 10
 --- !u!114 &371784631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +418,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961d631d6bd64da41800fca576019fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &371784632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371784621}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43355ce113a39a54ea1a68155b9c0013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20
+  damage: 25
+  timeout: 0.2
+  targets: 3
+  gunPoint: {fileID: 1369822860}
+  bullet: {fileID: 962701545887299494, guid: 77a54a1930fba35418fc7541d6b47c24, type: 3}
+  bul: {fileID: 8307207279187055083, guid: 69c23c740a0aaa841a5a59ab0394ebb3, type: 3}
+  razbros: 20
+  bullets: 4
 --- !u!1 &542296046
 GameObject:
   m_ObjectHideFlags: 0
