@@ -23,9 +23,21 @@ public class PistolRay : MonoBehaviour
 		rt = ReloadTime;
 		holder = oboima;
     }
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			if (holder != oboima)
+			{
+				holder = 0;
+				Debug.Log("Активирую перезарядку2");
+				ReloadActive = true;
 
-    // Update is called once per frame
-    void Update()
+			}
+		}
+	}
+	// Update is called once per frame
+	void FixedUpdate()
     {
 
 				if (Input.GetMouseButton(0) && ReloadActive==false)
@@ -56,15 +68,6 @@ public class PistolRay : MonoBehaviour
 				{
 					curTimeout = timeout + 1;
 				}
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (holder != oboima)
-            {
-				holder = 0;
-				ReloadActive = true;
-
-			}
-        }
         if (ReloadActive)
         {
 			Reload();
