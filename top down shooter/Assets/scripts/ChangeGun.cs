@@ -5,9 +5,7 @@ using UnityEngine;
 public class ChangeGun : MonoBehaviour
 {
     Transform player;
-    public GameObject gun0;
-    public GameObject gun1;
-    public GameObject gun2;
+    public GameObject[] gun;
     public int Id = 0;
     // Start is called before the first frame update
     void Start()
@@ -58,23 +56,23 @@ public class ChangeGun : MonoBehaviour
         if (Id == 0)
         {
             Null();
-            gun0.SetActive(true);
+            gun[0].SetActive(true);
         }
         if (Id == 1)
         {
             Null();
-            gun1.SetActive(true);
+            gun[1].SetActive(true);
         }
         if (Id == 2)
         {
             Null();
-            gun2.SetActive(true);
+            gun[2].SetActive(true);
         }
     }
     void Null()
     {
-        gun0.SetActive(false);
-        gun1.SetActive(false);
-        gun2.SetActive(false);
+        gun[0].SetActive(false);
+        gun[1].SetActive(false);
+        gun[2].SetActive(false);
     }
 }

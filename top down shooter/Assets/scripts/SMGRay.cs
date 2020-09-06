@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class SMGRay : MonoBehaviour
 {
 	public float speed = 20;
@@ -23,12 +23,21 @@ public class SMGRay : MonoBehaviour
 	public float ReloadTime = 2f;
 	float rt = 0;
 	bool ReloadActive = false;
+	public Texture image;
+	public RawImage Canvasimage;
+	public Text text;
+	public int AmmoMax = 120;
+	int UsedAmmo;
+	public int Ammo;
 	// Start is called before the first frame update
 	void Start()
 	{
+		Ammo = AmmoMax;
 		chetminus = chetplus = number;
 		rt = ReloadTime;
 		holder = oboima;
+		Canvasimage.texture = image;
+		text.text = holder.ToString();
 	}
 	private void Update()
 	{
@@ -36,7 +45,9 @@ public class SMGRay : MonoBehaviour
 		{
 			if (holder != oboima)//проверяем что у нас не макс патронов
 			{
+				UsedAmmo = oboima - holder;
 				holder = 0;//опустошаем магазин
+				text.text = holder.ToString();
 				Debug.Log("Активирую перезарядку2");
 				ReloadActive = true;
 
@@ -46,63 +57,68 @@ public class SMGRay : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-
-		if (Input.GetMouseButton(0) && ReloadActive==false)//если нажали кнопку выстрела
+		text.text = holder.ToString() + "/" + Ammo.ToString();
+		if (Ammo != 0 || holder != 0)
 		{
-			if (holder != 0)//если есть патроны
+			if (Input.GetMouseButton(0) && ReloadActive == false)//если нажали кнопку выстрела
 			{
-				curTimeout += Time.deltaTime;
-				if (curTimeout > timeout)//проверяем что задержка закончилась
+				if (holder != 0)//если есть патроны
 				{
-					holder--;//вычитаем патрон
-					Transform info;
-					Vector3 rot = transform.parent.gameObject.transform.rotation.eulerAngles;//получаем занчения поворота
-					float rand = Random.Range(-razbros, razbros);//рандомим угол отклонения
-					rot.y += rand;
-					info = Instantiate(bullet, gunPoint.position, Quaternion.Euler(rot.x, rot.y, rot.z));//создаем пустой объект отвечающий за алгоритм пули
-					info.GetComponent<RayBullet>().damage = damage;//передаем нужные данные для пули
-					info.GetComponent<RayBullet>().speed = speed;
-					info.GetComponent<RayBullet>().bullet = bul;
-					info.GetComponent<RayBullet>().targets = targets;
-					info.GetComponent<RayBullet>().ready = true;
-					Debug.Log("Префаб создан");
-					curTimeout = 0;
-					chetplus--;//после определенного количества пуль начинается разброс
-					chetminus = number;
+					curTimeout += Time.deltaTime;
+					if (curTimeout > timeout)//проверяем что задержка закончилась
+					{
+						holder--;//вычитаем патрон
+						text.text = holder.ToString();
+						Transform info;
+						Vector3 rot = transform.parent.gameObject.transform.rotation.eulerAngles;//получаем занчения поворота
+						float rand = Random.Range(-razbros, razbros);//рандомим угол отклонения
+						rot.y += rand;
+						info = Instantiate(bullet, gunPoint.position, Quaternion.Euler(rot.x, rot.y, rot.z));//создаем пустой объект отвечающий за алгоритм пули
+						info.GetComponent<RayBullet>().damage = damage;//передаем нужные данные для пули
+						info.GetComponent<RayBullet>().speed = speed;
+						info.GetComponent<RayBullet>().bullet = bul;
+						info.GetComponent<RayBullet>().targets = targets;
+						info.GetComponent<RayBullet>().ready = true;
+						Debug.Log("Префаб создан");
+						curTimeout = 0;
+						chetplus--;//после определенного количества пуль начинается разброс
+						chetminus = number;
+					}
 				}
+				else
+				{
+					UsedAmmo = oboima - holder;
+					ReloadActive = true;//если патронов 0 то перезаряжаем
+				}
+
 			}
 			else
-            {
-				ReloadActive = true;//если патронов 0 то перезаряжаем
-            }
-
-		}
-		else
-		{
-			curTimeout = timeout + 1;
-			chetminus--;//если не стреляем определенное время то разброс уменьшается
-			chetplus = number;
-		}
-		if (chetplus == 0)//определенное количество пуль было выпущено
-        {
-			chetplus = number;//востанавливаем счетчик
-			if (razbros < max)//если не больше максимума то увеличиваем область разброса
 			{
-				razbros += degree;
+				curTimeout = timeout + 1;
+				chetminus--;//если не стреляем определенное время то разброс уменьшается
+				chetplus = number;
 			}
-        }
-        if (chetminus == 0)
-        {
-			chetminus = number;
-            if (razbros > 0)
-            {
-				razbros -= degree;
-            }
-        }
-		
-		if (ReloadActive)//вызываем функцию для перезарядки оружия
-		{
-			Reload();
+			if (chetplus == 0)//определенное количество пуль было выпущено
+			{
+				chetplus = number;//востанавливаем счетчик
+				if (razbros < max)//если не больше максимума то увеличиваем область разброса
+				{
+					razbros += degree;
+				}
+			}
+			if (chetminus == 0)
+			{
+				chetminus = number;
+				if (razbros > 0)
+				{
+					razbros -= degree;
+				}
+			}
+
+			if (ReloadActive)//вызываем функцию для перезарядки оружия
+			{
+				Reload();
+			}
 		}
 	}
 	void Reload()//функция отвечающая за перезарядки пушки
@@ -118,12 +134,29 @@ public class SMGRay : MonoBehaviour
 			ReloadActive = false;
 			rt = ReloadTime;
 			holder = oboima;
+			int patron = Ammo - oboima;
+			if (patron < 0)
+			{
+				holder = Ammo;
+				Ammo = 0;
+			}
+			else
+			{
+				holder = oboima;
+				Ammo = Ammo - UsedAmmo;
+			}
 			Debug.Log("Перезарядка закончилась");
 		}
 	}
 	void OnDisable()
 	{
 		rt = ReloadTime;
+
+	}
+	private void OnEnable()
+	{
+		Canvasimage.texture = image;
+		text.text = holder.ToString();
 	}
 }
 

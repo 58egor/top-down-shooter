@@ -8,6 +8,8 @@ public class enemy : MonoBehaviour
     public float HP=100;
     public float move = 10;
     public float time = 0;
+    public GameObject DotSpawn;
+    public GameObject GunSpawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,9 @@ public class enemy : MonoBehaviour
     public void Die()
     {
         Debug.Log("Не бей.Я умер");
+        Quaternion quart = GunSpawn.transform.rotation;
+        quart.y = DotSpawn.transform.rotation.y;
+        Instantiate(GunSpawn, DotSpawn.transform.position, quart);
         Destroy(this.gameObject);
     }
 }
