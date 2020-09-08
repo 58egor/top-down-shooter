@@ -40,16 +40,16 @@ public class ChRldSMG : MonoBehaviour
                 if (player.GetComponent<ChangeGun>().gun[i].GetComponent<GunInfo>().Name == Name)
                 {
                     Debug.Log("Заряжаю");
-                    SMGRay info = player.GetComponent<ChangeGun>().gun[i].GetComponent<SMGRay>();
-                    if (info.Ammo != info.AmmoMax)
+                    ChangeGun info = player.GetComponent<ChangeGun>();
+                    if (info.SMGAmmo != info.SMGAmmoMax)
                     {
-                        if (info.Ammo + AddAmmo > info.AmmoMax)
+                        if (info.SMGAmmo + AddAmmo > info.SMGAmmoMax)
                         {
-                            info.Ammo = info.AmmoMax;
+                            info.SMGAmmo = info.SMGAmmoMax;
                         }
                         else
                         {
-                            info.Ammo += AddAmmo;
+                            info.SMGAmmo += AddAmmo;
                         }
                         Destroy(gameObject);
                     }

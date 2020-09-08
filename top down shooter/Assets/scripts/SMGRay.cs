@@ -26,13 +26,12 @@ public class SMGRay : MonoBehaviour
 	public Texture image;
 	public RawImage Canvasimage;
 	public Text text;
-	public int AmmoMax = 120;
 	int UsedAmmo;
-	public int Ammo;
+	ChangeGun AmmoInfo;
 	// Start is called before the first frame update
 	void Start()
 	{
-		Ammo = AmmoMax;
+		AmmoInfo = transform.GetComponentInParent<ChangeGun>();
 		chetminus = chetplus = number;
 		rt = ReloadTime;
 		holder = oboima;
@@ -43,10 +42,9 @@ public class SMGRay : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.R))//если пользователь нажал р то активируем перезарядку
 		{
-			if (holder != oboima)//проверяем что у нас не макс патронов
+			if (holder != oboima && AmmoInfo.SMGAmmo!=0)//проверяем что у нас не макс патронов
 			{
 				UsedAmmo = oboima - holder;
-				holder = 0;//опустошаем магазин
 				text.text = holder.ToString();
 				Debug.Log("Активирую перезарядку2");
 				ReloadActive = true;
@@ -57,8 +55,8 @@ public class SMGRay : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		text.text = holder.ToString() + "/" + Ammo.ToString();
-		if (Ammo != 0 || holder != 0)
+		text.text = holder.ToString() + "/" + AmmoInfo.SMGAmmo.ToString();
+		if (AmmoInfo.SMGAmmo != 0 || holder != 0)
 		{
 			if (Input.GetMouseButton(0) && ReloadActive == false)//если нажали кнопку выстрела
 			{
@@ -133,17 +131,17 @@ public class SMGRay : MonoBehaviour
 			razbros = 0;
 			ReloadActive = false;
 			rt = ReloadTime;
-			holder = oboima;
-			int patron = Ammo - oboima;
+			int patron = AmmoInfo.SMGAmmo - oboima;
 			if (patron < 0)
 			{
-				holder = Ammo;
-				Ammo = 0;
+				holder += AmmoInfo.SMGAmmo;
+				AmmoInfo.SMGAmmo = 0;
 			}
 			else
 			{
-				holder = oboima;
-				Ammo = Ammo - UsedAmmo;
+				Debug.Log(UsedAmmo);
+				holder +=UsedAmmo;
+				AmmoInfo.SMGAmmo = AmmoInfo.SMGAmmo - UsedAmmo;
 			}
 			Debug.Log("Перезарядка закончилась");
 		}

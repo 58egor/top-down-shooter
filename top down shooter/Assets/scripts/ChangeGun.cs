@@ -6,7 +6,16 @@ public class ChangeGun : MonoBehaviour
 {
     Transform player;
     public GameObject[] gun;
+    public GameObject[] DropGun;
+    public GameObject[] Allguns;
+    public GameObject DotSpawn;
     public int Id = 0;
+    public int PistolAmmoMax = 60;
+    public int SMGAmmoMax = 120;
+    public int ShootgunAmmoMax = 20;
+    public int PistolAmmo=60;
+    public int SMGAmmo=120;
+    public int ShootgunAmmo=20;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +52,7 @@ public class ChangeGun : MonoBehaviour
             Change();
         }
     }
-    void Change()
+    public void Change()
     {
         if (Id > 2)
         {

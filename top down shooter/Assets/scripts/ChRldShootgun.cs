@@ -41,16 +41,16 @@ public class ChRldShootgun : MonoBehaviour
                 if (player.GetComponent<ChangeGun>().gun[i].GetComponent<GunInfo>().Name == Name)
                 {
                     Debug.Log("Заряжаю");
-                    ShootGunRay info = player.GetComponent<ChangeGun>().gun[i].GetComponent<ShootGunRay>();
-                    if (info.Ammo != info.AmmoMax)
+                    ChangeGun info = player.GetComponent<ChangeGun>();
+                    if (info.ShootgunAmmo != info.ShootgunAmmoMax)
                     {
-                        if (info.Ammo + AddAmmo > info.AmmoMax)
+                        if (info.ShootgunAmmo + AddAmmo > info.ShootgunAmmoMax)
                         {
-                            info.Ammo = info.AmmoMax;
+                            info.ShootgunAmmo = info.ShootgunAmmoMax;
                         }
                         else
                         {
-                            info.Ammo += AddAmmo;
+                            info.ShootgunAmmo += AddAmmo;
                         }
                         Destroy(gameObject);
                     }

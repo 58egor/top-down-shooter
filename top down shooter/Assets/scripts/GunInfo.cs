@@ -5,6 +5,8 @@ using UnityEngine;
 public class GunInfo : MonoBehaviour
 {
     public string Name = "Gun";
+    public string Type = "Pistol";
+    public int Id = 0;
     // Start is called before the first frame update
     void Start()
     {

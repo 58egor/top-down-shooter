@@ -22,12 +22,11 @@ public class ShootGunRay : MonoBehaviour
 	public Texture image;
 	public RawImage Canvasimage;
 	public Text text;
-	public int AmmoMax = 20;
-	public int Ammo=0;
+	ChangeGun AmmoInfo;
 	// Start is called before the first frame update
 	void Start()
     {
-		Ammo = AmmoMax;
+		AmmoInfo = transform.GetComponentInParent<ChangeGun>();
 		holder = oboima;
 		rt = ReloadTime;
 		Canvasimage.texture = image;
@@ -39,7 +38,7 @@ public class ShootGunRay : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			if (holder != oboima)
+			if (holder != oboima && AmmoInfo.ShootgunAmmo != 0)
 			{
 				Debug.Log("Активирую перезарядку2");
 				ReloadActive = true;
@@ -49,8 +48,8 @@ public class ShootGunRay : MonoBehaviour
 	}
     void FixedUpdate()
     {
-		text.text = holder.ToString() + "/" + Ammo.ToString();
-		if (Ammo != 0 || holder != 0)
+		text.text = holder.ToString() + "/" + AmmoInfo.ShootgunAmmo.ToString();
+		if (AmmoInfo.ShootgunAmmo!= 0 || holder != 0)
 		{
 			if (Input.GetMouseButton(0))
 			{
@@ -127,9 +126,9 @@ public class ShootGunRay : MonoBehaviour
 		{
 			rt = ReloadTime;
 			holder++;
-			Ammo--;
+			AmmoInfo.ShootgunAmmo--;
 		}
-        if (holder == oboima || Ammo==0)
+        if (holder == oboima || AmmoInfo.ShootgunAmmo== 0)
         {
 			Debug.Log("Перезарядка закончилась");
 			ReloadActive = false;

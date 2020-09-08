@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PistolRay : MonoBehaviour
 {
-	public string name = "Revolver";
 	public float speed = 20;
     public float damage = 25;
     public float timeout = 0.2f;
@@ -21,26 +20,24 @@ public class PistolRay : MonoBehaviour
 	public Texture image;
 	public RawImage Canvasimage;
 	public Text text;
-	public int AmmoMax = 60;
 	int UsedAmmo;
-	public int Ammo;
-// Start is called before the first frame update
-void Start()
+	ChangeGun AmmoInfo;
+	// Start is called before the first frame update
+	void Start()
     {
-		Ammo = AmmoMax;
+		AmmoInfo = transform.GetComponentInParent<ChangeGun>();
 		rt = ReloadTime;
 		holder = oboima;
 		Canvasimage.texture = image;
-		text.text = holder.ToString()+"/"+Ammo.ToString();
+		text.text = holder.ToString()+"/" + AmmoInfo.PistolAmmo.ToString();
 	}
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			if (holder != oboima)
+			if (holder != oboima && AmmoInfo.PistolAmmo!=0)
 			{
 				UsedAmmo = oboima-holder;
-				holder = 0;
 				text.text = holder.ToString();
 				Debug.Log("Активирую перезарядку2");
 				ReloadActive = true;
@@ -51,8 +48,8 @@ void Start()
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		text.text = holder.ToString() + "/" + Ammo.ToString();
-		if (Ammo != 0 || holder !=0)
+		text.text = holder.ToString() + "/" + AmmoInfo.PistolAmmo.ToString();
+		if (AmmoInfo.PistolAmmo != 0 || holder !=0)
 		{
 			if (Input.GetMouseButton(0) && ReloadActive == false)
 			{
@@ -62,7 +59,7 @@ void Start()
 					if (curTimeout > timeout)
 					{
 						holder--;
-						text.text = holder.ToString() + "/" + Ammo.ToString();
+						text.text = holder.ToString() + "/" + AmmoInfo.PistolAmmo.ToString();
 						Transform info;
 						info = Instantiate(bullet, gunPoint.position, transform.parent.gameObject.transform.rotation);
 						info.GetComponent<RayBullet>().damage = damage;
@@ -102,18 +99,18 @@ void Start()
 
 			ReloadActive = false;
 			rt = ReloadTime;
-			int patron = Ammo - oboima;
+			int patron = AmmoInfo.PistolAmmo - oboima;
 			if (patron < 0)
 			{
-				holder = Ammo;
-				Ammo = 0;
+				holder += AmmoInfo.PistolAmmo;
+				AmmoInfo.PistolAmmo = 0;
 			}
 			else
 			{
-				holder = oboima;
-				Ammo = Ammo - UsedAmmo;
+				holder +=UsedAmmo;
+				AmmoInfo.PistolAmmo = AmmoInfo.PistolAmmo - UsedAmmo;
             }
-			text.text = holder.ToString() + "/" + Ammo.ToString();
+			text.text = holder.ToString() + "/" + AmmoInfo.PistolAmmo.ToString();
 			Debug.Log("Перезарядка закончилась");
 		}
     }
@@ -124,6 +121,10 @@ void Start()
     private void OnEnable()
     {
 		Canvasimage.texture = image;
-		text.text = holder.ToString() + "/" + Ammo.ToString();
+		text.text = holder.ToString() + "/" + AmmoInfo.PistolAmmo.ToString();
 	}
+	public void removed()
+    {
+		holder = oboima;
+    }
 }
