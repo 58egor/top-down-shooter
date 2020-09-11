@@ -61,6 +61,7 @@ public class PistolRay : MonoBehaviour
 						holder--;
 						text.text = holder.ToString() + "/" + AmmoInfo.PistolAmmo.ToString();
 						Transform info;
+
 						info = Instantiate(bullet, gunPoint.position, transform.parent.gameObject.transform.rotation);
 						info.GetComponent<RayBullet>().damage = damage;
 						info.GetComponent<RayBullet>().speed = speed;
