@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6709647358201344279}
   - component: {fileID: 6709647358201344278}
   - component: {fileID: 6709647358201344277}
-  - component: {fileID: 6709647358201344276}
+  - component: {fileID: -4417901809997191763}
   m_Layer: 9
   m_Name: Pistol (3)
   m_TagString: Untagged
@@ -94,7 +94,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7, y: 7, z: 12}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940699}
---- !u!114 &6709647358201344276
+--- !u!114 &-4417901809997191763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,11 +103,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6709647358201344275}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2082c33f271c37844b52f2efbf25b44a, type: 3}
+  m_Script: {fileID: 11500000, guid: 95e3506a2ea49f24589928e0a132aa6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Revolver2
+  Ammo: 48
   AddAmmo: 24
   player: {fileID: 0}
   GunId: 3
   LongOfChageDefault: 0
+  PistolAmmo: 0
+  SMGAmmo: 0
+  ShootgunAmmo: 0
