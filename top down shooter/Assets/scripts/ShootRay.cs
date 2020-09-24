@@ -5,15 +5,18 @@ using UnityEngine.UI;
 public class ShootRay : MonoBehaviour
 {
     //общие параметры пули
+    [Header("Параметры пули:")]
     public float speed = 20;//скорость пули
     public float damage = 25;//урон пули
     public float timeout = 0.2f;//задержка между выстрелами
     public int targets = 3;//количество целей перед уничтожением пули
     private float curTimeout;
+    [Header("Объекты появляющиеся при выстреле:")]
     public Transform gunPoint;//точка появления пули
     public Transform bullet;//точка отвечающая за логику пули
     public Rigidbody bul;//сама пуля
-    //параметры для смг
+                         //параметры для смг
+    [Header("Параметры для разброса пули при задержки кнопки выстрела:")]
     public int number = 5;//после какой пули увеличивается разброс
     public float degree = 1;//на сколько градусов изменяется разброс
     public int max = 10;//максимальое значение
@@ -21,21 +24,26 @@ public class ShootRay : MonoBehaviour
     int chetplus = 5;
     float razbros = 0;
     //параметры для дробовика
+    [Header("Параметры разброса пули при выстреле+количество пуль:")]
     public float ShootgunRazbros = 10;//растояние между пулями
     public int bullets = 4;//количество пуль
     public bool ReloadOne=false;//заряжать по 1 патрону или нет
     //информация о патронах
+    [Header("Информация о патронах:")]
     int holder;//текущее оличество патрон в обоиме
     public int oboima = 6;//максимальное количество патрнов в обоиме
     public float ReloadTime = 0.5f;//максимальное время перезарядки
     float rt = 0;//время перезарядки
     bool ReloadActive = false;//информация о том что активна перезарядка или нет
+    [Header("Объекты для интерфейса:")]
     public Texture image;//вывод фото
     public RawImage Canvasimage;//доступ к юи
     public Text text;//текст
+    public Slider slider;
     int UsedAmmo;//количество использованных патронов
     ChangeGun AmmoInfo;//доступ к масимальному количеству патронов
-    //используемы тип патронов
+                       //используемы тип патронов
+    [Header("Тип патронов:")]
     public bool PistolAmmo=false;
     public bool SMGAmmo = false;
     public bool ShootgunAmmo = false;
@@ -43,6 +51,8 @@ public class ShootRay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        slider.maxValue = ReloadTime;
+        slider.value = 0;
         chetminus = chetplus = number;
         AmmoInfo = transform.GetComponentInParent<ChangeGun>();
         rt = ReloadTime;
@@ -75,6 +85,8 @@ public class ShootRay : MonoBehaviour
                     text.text = holder.ToString();
                     Debug.Log("Активирую перезарядку2");
                     ReloadActive = true;
+                    slider.value = 0;
+                    slider.gameObject.SetActive(true);
                 }
             }
             if (SMGAmmo)
@@ -85,6 +97,8 @@ public class ShootRay : MonoBehaviour
                     text.text = holder.ToString();
                     Debug.Log("Активирую перезарядку2");
                     ReloadActive = true;
+                    slider.value = 0;
+                    slider.gameObject.SetActive(true);
                 }
             }
             if (ShootgunAmmo)
@@ -95,6 +109,8 @@ public class ShootRay : MonoBehaviour
                     text.text = holder.ToString();
                     Debug.Log("Активирую перезарядку2");
                     ReloadActive = true;
+                    slider.value = 0;
+                    slider.gameObject.SetActive(true);
                 }
             }
         }
@@ -120,6 +136,7 @@ public class ShootRay : MonoBehaviour
             {
                 Debug.Log("Деактивирую перезарядку");
                 ReloadActive = false;
+                slider.gameObject.SetActive(false);
             }
             if (Input.GetMouseButton(0) && ReloadActive == false)
             {
@@ -173,6 +190,8 @@ public class ShootRay : MonoBehaviour
                 {
                     UsedAmmo = oboima - holder;
                     ReloadActive = true;
+                    slider.value = 0;
+                    slider.gameObject.SetActive(true);
                 }
             }
             else
@@ -209,9 +228,11 @@ public class ShootRay : MonoBehaviour
         {
             rt -= Time.deltaTime;
             Debug.Log("Перезарядка:" + rt);
+            slider.value = ReloadTime-rt;
         }
         else
         {
+            slider.value = ReloadTime - rt;
             if (ReloadOne == false)
             {
                 ReloadActive = false;
@@ -229,6 +250,7 @@ public class ShootRay : MonoBehaviour
                         holder += UsedAmmo;
                         AmmoInfo.PistolAmmo = AmmoInfo.PistolAmmo - UsedAmmo;
                     }
+                    slider.gameObject.SetActive(false);
                 }
                 if (SMGAmmo)
                 {
@@ -244,6 +266,7 @@ public class ShootRay : MonoBehaviour
                         holder += UsedAmmo;
                         AmmoInfo.SMGAmmo = AmmoInfo.SMGAmmo - UsedAmmo;
                     }
+                    slider.gameObject.SetActive(false);
                 }
                 if (ShootgunAmmo)
                 {
@@ -259,6 +282,7 @@ public class ShootRay : MonoBehaviour
                         holder += UsedAmmo;
                         AmmoInfo.ShootgunAmmo = AmmoInfo.ShootgunAmmo - UsedAmmo;
                     }
+                    slider.gameObject.SetActive(false);
                 }
 
             }
@@ -271,6 +295,7 @@ public class ShootRay : MonoBehaviour
                 {
                     Debug.Log("Перезарядка закончилась");
                     ReloadActive = false;
+                    slider.gameObject.SetActive(false);
                 }
             }
         }
@@ -306,6 +331,9 @@ public class ShootRay : MonoBehaviour
     }
     private void OnEnable()
     {
+        slider.gameObject.SetActive(false);
+        slider.maxValue = ReloadTime;
+        slider.value = 0;
         Canvasimage.texture = image;
         text.text = holder.ToString();
     }
